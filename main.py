@@ -14,11 +14,14 @@ from keyboards.for_menu import menu_keyboard
 
 from config import TOKEN
 from utils.databases import UsersDataBase
+from utils.databases_servee import MySqlDatabase
 
 
 router = Router()
 
 userDB = UsersDataBase()
+db = MySqlDatabase()
+
 
 @router.message(Command("start"),)
 @router.message(Text(['🔷 Меню','меню','Меню','/start']))
@@ -44,6 +47,7 @@ async def main() -> None:
 
     dp.include_routers(menu.router, order.router, payment_history.router, admin.router)
     await userDB.create_table()
+    await db.create_table()
 
     await dp.start_polling(bot)
 
